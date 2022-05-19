@@ -1,0 +1,41 @@
+def udpClient():
+    import socket
+    
+    serverAddressPort = ("192.168.20.15", 20001)
+    bufferSize = 1024
+
+ 
+    while(True):
+    
+        msgFromClient = input() #message to server
+    
+        bytesToSend = str.encode(msgFromClient)
+    
+
+        # Create a UDP socket at client side
+
+        UDPClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+
+        # Send to server using created UDP socket
+
+        UDPClientSocket.sendto(bytesToSend, serverAddressPort)
+
+        msgFromServer = UDPClientSocket.recvfrom(bufferSize)
+        
+        msgFromServer_Length = UDPClientSocket.recvfrom(bufferSize)
+
+        
+        msgFromServer = decode(msgFromServer[0])
+        
+        print(msgFromServer + ". bytes recieved - " + byteLength(msgFromServer))
+        
+        
+        if msgFromClient.upper() != "HELLO":
+            print("Client Transmission Over")
+            break
+
+    
+def decode(message):return message.decode("utf-8")
+def byteLength(message): return str(len(message))
+
+udpClient()

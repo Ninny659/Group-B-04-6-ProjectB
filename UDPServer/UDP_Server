@@ -1,0 +1,65 @@
+import socket
+
+ 
+
+localIP = "192.168.20.15" 
+localPort = 20001
+
+bufferSize = 1024
+
+client_name = False
+
+
+# Create a datagram socket
+UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+
+# Bind to address and ip
+UDPServerSocket.bind((localIP, localPort))
+
+ 
+print("UDP server online")
+
+# Listen for incoming datagrams
+
+while(True):
+
+    bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+
+    message = bytesAddressPair[0]
+    address = bytesAddressPair[1]
+
+    clientMsg = "Message from Client:{}".format(message)
+    clientIP  = "Client IP Address:{}".format(address)
+    
+    print(clientMsg)
+    print(clientIP)
+    
+    print(message.upper())
+    
+    if message.upper() == b'HELLO':
+        server_Response = "Hello, What's your name?"
+        
+        bytesToSend = str.encode(server_Response)
+        
+        message = ""
+        
+        client_name = True
+    elif client_name == True:
+        
+        server_Response = "Hello " + str(message.decode("utf-8")) + ", Welcome to SIT202"
+        
+        client_name = False
+        
+        message = ""
+        
+        bytesToSend = str.encode(server_Response)
+    else:
+        server_Response = "Hello UDP Client"
+        bytesToSend = str.encode(server_Response)
+
+    # Sending a reply to client
+    messageLength = str.encode(str(len(server_Response)))
+    
+    UDPServerSocket.sendto(bytesToSend, address)
+    
+    UDPServerSocket.sendto(messageLength, address)

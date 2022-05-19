@@ -1,0 +1,38 @@
+def client():
+    
+    message_Client = input()   
+    
+    upper_Client_Text, len_Count = server(message_Client, False)
+    
+    
+    if upper_Client_Text.upper() == "HELLO, WHAT'S YOUR NAME?":
+        name_Client = input()
+        upper_Client_Text, len_Count = server(name_Client, True)
+        
+    
+    print(upper_Client_Text)
+    print(len_Count)
+
+
+def server(client_Text, name_Bool):
+    
+        len_Count = len(client_Text)
+        
+        upper_Client_Text = client_Text.upper()
+        
+        
+        if name_Bool == True:
+            client_Text = "Hello " + client_Text + ", Welcome to SIT202"
+            len_Count = len(client_Text)
+            return client_Text, len_Count
+        
+        if upper_Client_Text == "HELLO":
+            client_Text = "Hello, What's your name?"
+            len_Count = len(client_Text)
+            print(client_Text)
+            return client_Text, len_Count
+
+        
+        return upper_Client_Text, len_Count
+
+client()
